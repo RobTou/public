@@ -11,8 +11,10 @@ const urlDatabase = {};
 let urlCounter = 1; // This will be used to generate short URLs
 
 app.use(cors());
-
+app.use(express.json());
 app.use('/public', express.static(`${process.cwd()}/public`));
+app.use(express.urlencoded({ extended: true }));
+
 
 app.get('/', function(req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
@@ -24,33 +26,33 @@ app.get('/api/hello', function(req, res) {
 });
 
 // URL shortener
-app.post('/api/shorturl', (res, req) => {
-  const url = req.body;
+app.post('/api/shorturl', (req, res) => {
+  const { url } = req.body;
 
   // Validate the URL format
+  let parsedUrl;
   try {
-    let parsedUrl = new URL(url);
+    parsedUrl = new URL(url);
   } catch(err) {
     return res.json({ error: 'invalid url'});
   }
 
   dns.lookup(parsedUrl.hostname, (err) => {
     if (err)
-      res.json({ error: 'invalid url'});
-  })
-
-  // Check if the URL is already in the database
-  for (const key in urlDatabase) {
-    if ( urlDatabase[key] === url ) {
-      return res.json({ original_url: url, short_url: key});
+      return res.json({ error: 'invalid url'});
+    
+    // Check if the URL is already in the database
+    for (const key in urlDatabase) {
+      if ( urlDatabase[key] === url ) {
+        return res.json({ original_url: url, short_url: key});
+      } 
     }
-
+    
     const shortUrl = urlCounter++;
     urlDatabase[shortUrl] = url;
-
+    
     res.json({original_url: url, short_url: shortUrl });
-
-  }
+  })
 })
 
 // Redirect endpoint
