@@ -70,7 +70,7 @@ app.get('/api/users/:_id/logs', (req, res) => {
     return res.status(404).send('User not found');
   }
 
-  const log = userExercises.map(ex => ({
+  let log = userExercises.map(ex => ({
     description: ex.description,
     duration: ex.duration,
     date: ex.date
