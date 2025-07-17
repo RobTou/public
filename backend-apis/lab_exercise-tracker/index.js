@@ -61,7 +61,7 @@ app.post('/api/users/:_id/exercises', (req, res) => {
 });
 
 // Route to retrieve a user's exercise log
-app.get('/api/users/:_id/log', (req, res) => {
+app.get('/api/users/:_id/logs', (req, res) => {
   const userId = req.params._id;
   const userExercises = exercises.filter(ex => ex.userId === userId);
   const user = users.find((user) => user._id = userId);
