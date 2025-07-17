@@ -47,7 +47,7 @@ app.post('/api/users/:_id/exercises', (req, res) => {
   const newExercise = {
     description,
     duration: Number(duration),
-    date: exerciseDate.toDateString()
+    date: exerciseDate.toISOString()
   };
 
   exercises.push({userId, ...newExercise});
