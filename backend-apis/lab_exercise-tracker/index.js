@@ -17,6 +17,14 @@ let users = [];
 let exercises = [];
 let userIdCounter = 1;
 
+// Function to format date to YYYY-MM-DD
+function formatDateToYYYYMMDD(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 // POST route to create a new user.
 app.post('/api/users', (req, res) => {
   const username = req.body.username;
@@ -47,7 +55,7 @@ app.post('/api/users/:_id/exercises', (req, res) => {
   const newExercise = {
     description,
     duration: Number(duration),
-    date: exerciseDate.toISOString().slice(0,10)
+    date: formatDateToYYYYMMDD(exerciseDate)
   };
 
   exercises.push({userId, ...newExercise});
