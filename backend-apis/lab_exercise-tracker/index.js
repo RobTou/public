@@ -64,7 +64,7 @@ app.post('/api/users/:_id/exercises', (req, res) => {
 app.get('/api/users/:_id/logs', (req, res) => {
   const userId = req.params._id;
   const userExercises = exercises.filter(ex => ex.userId === userId);
-  const user = users.find((user) => user._id = userId);
+  const user = users.find((user) => user._id === userId);
 
   if (!user) {
     return res.status(404).send('User not found');
