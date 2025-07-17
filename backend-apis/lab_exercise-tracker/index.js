@@ -76,6 +76,22 @@ app.get('/api/users/:_id/logs', (req, res) => {
     date: ex.date
   }));
 
+  // Handle query parameters for filtering logs
+  const { from, to, limit } = req.query;
+
+  // Filter by date range
+  if (from) {
+    log = log.filter(ex => new Date(ex.date) >= new Date(from));
+  }
+  if (to) {
+    log = log.filter(ex => new Date(ex.date) <= new Date(to));
+  }
+
+  // Limit the number of logs
+  if (limit) {
+    log = log.slice(0, parseInt(limit));
+  }
+
   res.json({
     username: user.username,
     count: log.length,
