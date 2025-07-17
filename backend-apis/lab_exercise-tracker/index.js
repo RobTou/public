@@ -37,7 +37,7 @@ app.get('/api/users', (req, res) => {
 app.post('/api/users/:_id/exercises', (req, res) => {
   const userId = req.params._id;
   const { description, duration, date } = req.body;
-  const user = users.find((user) => user._id = userId);
+  const user = users.find(user => user._id === userId);
 
   if (!user) {
     return res.status(404).send('User not found');
@@ -45,14 +45,19 @@ app.post('/api/users/:_id/exercises', (req, res) => {
 
   const exerciseDate = date ? new Date(date): new Date();
   const newExercise = {
-    username: user.username,
     description,
     duration,
-    date: exerciseDate.toDateString
+    date: exerciseDate.toDateString()
   };
 
   exercises.push({userId, ...newExercise});
-  res.json({ ...user, ...newExercise });
+  res.json({
+    username: user.username,
+    _id: user._id,
+    description: newExercise.description,
+    duration: newExercise.duration,
+    date: newExercise.date
+  });
 });
 
 // Route to retrieve a user's exercise log
