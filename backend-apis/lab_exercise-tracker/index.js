@@ -46,7 +46,7 @@ app.post('/api/users/:_id/exercises', (req, res) => {
   const exerciseDate = date ? new Date(date): new Date();
   const newExercise = {
     description,
-    duration,
+    duration: Number(duration),
     date: exerciseDate.toDateString()
   };
 
