@@ -81,15 +81,24 @@ app.get('/api/users/:_id/logs', (req, res) => {
 
   // Filter by date range
   if (from) {
-    log = log.filter(ex => new Date(ex.date) >= new Date(from));
+    const fromDate = new Date(from);
+    if (!isNaN(fromDate.getTime())) { // Check if the date is valid
+      log = log.filter(ex => new Date(ex.date) >= fromDate);
+    }
   }
   if (to) {
-    log = log.filter(ex => new Date(ex.date) <= new Date(to));
+    const toDate = new Date(to);
+    if (!isNaN(toDate.getTime())) { // Check if the date is valid
+      log = log.filter(ex => new Date(ex.date) <= toDate);
+    }
   }
 
   // Limit the number of logs
   if (limit) {
-    log = log.slice(0, parseInt(limit));
+    const limitNumber = parseInt(limit);
+    if (!isNaN(limitNumber) && limitNumber > 0) { // Ensure limit is a positive integer
+      log = log.slice(0, limitNumber);
+    }
   }
 
   res.json({
