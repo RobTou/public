@@ -8,6 +8,10 @@ var app = express();
 app.use(cors());
 app.use('/public', express.static(process.cwd() + '/public'));
 
+// Set up storage for uploaded files
+var storage = multer.memoryStorage(); // Store files in memory
+var upload = multer({ storage });
+
 app.get('/', function (req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
